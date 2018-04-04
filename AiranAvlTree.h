@@ -5,7 +5,7 @@
 using namespace std;
 
 template<typename T>
-class AiranAvlTree//Ğı×ªËã·¨ÊÇ¹Ø¼ü
+class AiranAvlTree//æ—‹è½¬ç®—æ³•æ˜¯å…³é”®
 {
 private:
 	struct Node{
@@ -17,8 +17,8 @@ private:
 			:data(_data),left(_left),right(_right){}
 
 	};
-	int height(Node *_node){//Õâ¸ö¸ß¶È,¸ù½Úµã¸ß¶ÈÎª0£»//Àí½â¸ÅÄî²åÈëÒ»¸ö½Úµã£¬´Ë½Úµã(°üÀ¨´Ë½Úµã)¼°ÒÔÉÏËùÓĞ¸¸½Úµã¸ß¶È¶¼»á¸üĞÂ
-		//¼´¿ÕÊ÷µÄ¸ß¶ÈÎª-1£¬Ò¶×ÓµÄ¸ß¶ÈÎª0
+	int height(Node *_node){//è¿™ä¸ªé«˜åº¦,æ ¹èŠ‚ç‚¹é«˜åº¦ä¸º0ï¼›//ç†è§£æ¦‚å¿µæ’å…¥ä¸€ä¸ªèŠ‚ç‚¹ï¼Œæ­¤èŠ‚ç‚¹(åŒ…æ‹¬æ­¤èŠ‚ç‚¹)åŠä»¥ä¸Šæ‰€æœ‰çˆ¶èŠ‚ç‚¹é«˜åº¦éƒ½ä¼šæ›´æ–°
+		//å³ç©ºæ ‘çš„é«˜åº¦ä¸º-1ï¼Œå¶å­çš„é«˜åº¦ä¸º0
 		return _node == nullptr ? -1 : _node->height;//
 	}
 	int max(int a, int b){
@@ -27,7 +27,7 @@ private:
 	Node *root;
 
 
-	void insert(const T &_data, Node *&_node){//µİ¹é²åÈë±ØĞëÖ¸ÕëÒıÓÃ£¬ÇÒºóÃæµÄÆ½ºâ²Ù×÷Ò²±ØĞëÖ¸ÕëÒıÓÃ
+	void insert(const T &_data, Node *&_node){//é€’å½’æ’å…¥å¿…é¡»æŒ‡é’ˆå¼•ç”¨ï¼Œä¸”åé¢çš„å¹³è¡¡æ“ä½œä¹Ÿå¿…é¡»æŒ‡é’ˆå¼•ç”¨
 		if (_node == nullptr)
 			_node = new Node(_data);
 		else if (_data < _node->data)
@@ -36,15 +36,15 @@ private:
 			insert(_data, _node->right);
 		/*else
 			;*/
-		balance(_node);//ÔÚÕâÀï·ÅÖÃ´Ëº¯Êı»áµ¼ÖÂ²åÈë½Úµã¼°´Ë½ÚµãËùÓĞµÄ¸¸½ÚµãÈ«²¿»áÖ´ĞĞ´Ëº¯Êı
+		balance(_node);//åœ¨è¿™é‡Œæ”¾ç½®æ­¤å‡½æ•°ä¼šå¯¼è‡´æ’å…¥èŠ‚ç‚¹åŠæ­¤èŠ‚ç‚¹æ‰€æœ‰çš„çˆ¶èŠ‚ç‚¹å…¨éƒ¨ä¼šæ‰§è¡Œæ­¤å‡½æ•°
 	}
-	static const int ALLOWED_IMBALANCE = 1;//ÔÊĞíµÄ²»Æ½ºâ
+	static const int ALLOWED_IMBALANCE = 1;//å…è®¸çš„ä¸å¹³è¡¡
 	
 	void balance(Node *&_node){
 		if (_node == nullptr)
 			return;
 		if (height(_node->left) - height(_node->right) > ALLOWED_IMBALANCE){
-			if (height(_node->left->left) > height(_node->left->right))//ÔÚÆ½ºâÔâµ½ÆÆ»µµÄ½ÚµãµÄ×ó×ÓÊ÷µÄ×ó×ÓÊ÷²åÊı¾İÆÆ»µµÄÆ½ºâ
+			if (height(_node->left->left) > height(_node->left->right))//åœ¨å¹³è¡¡é­åˆ°ç ´åçš„èŠ‚ç‚¹çš„å·¦å­æ ‘çš„å·¦å­æ ‘æ’æ•°æ®ç ´åçš„å¹³è¡¡
 				RWLL(_node);
 			else
 				RWLR(_node);
@@ -59,20 +59,20 @@ private:
 	}
 
 
-	void RWLL(Node *&fa){//×ó×ó
+	void RWLL(Node *&fa){//å·¦å·¦
 		Node *ch = fa->left;
 		fa->left = ch->right;
 		ch->right = fa;
 		fa->height = max(height(fa->left), height(fa->right)) + 1;
-		ch->height = max(height(ch->left), fa->height) + 1;//ÒòÎªchµÄÓÒ¶ù×ÓÒÑ¾­¸ü¸ÄÎªfa½Úµã
-		fa = ch;//ÒòÎªÊÇÖ¸ÕëÒıÓÃ£¬ËùÒÔÍ¨¹ı´Ë·½·¨¿ÉÒÔÓë¸¸½ÚµãÁ¬ÉÏ£»
+		ch->height = max(height(ch->left), fa->height) + 1;//å› ä¸ºchçš„å³å„¿å­å·²ç»æ›´æ”¹ä¸ºfaèŠ‚ç‚¹
+		fa = ch;//å› ä¸ºæ˜¯æŒ‡é’ˆå¼•ç”¨ï¼Œæ‰€ä»¥é€šè¿‡æ­¤æ–¹æ³•å¯ä»¥ä¸çˆ¶èŠ‚ç‚¹è¿ä¸Šï¼›
 	}
-	void RWLR(Node *&fa){//×óÓÒ
+	void RWLR(Node *&fa){//å·¦å³
 		RWRR(fa->left);
 		RWLL(fa);
 	}
 
-	void RWRR(Node *&fa){//ÓÒÓÒ
+	void RWRR(Node *&fa){//å³å³
 		Node *ch = fa->right;
 		fa->right = ch->left;
 		ch->left = fa;
@@ -81,11 +81,11 @@ private:
 		fa = ch;
 	}
 
-	void RWRW(Node *&fa){//ÓÒ×ó
+	void RWRW(Node *&fa){//å³å·¦
 		RWLL(fa->right);
 		RWRR(fa);
 	}
-	//ÏÈĞò±éÀú
+	//å…ˆåºéå†
 	void printPre(Node *_node, std::ostream &os){
 		if (_node){
 			os << _node->data << " ";
@@ -93,7 +93,7 @@ private:
 			printR(_node->right, os);
 		}
 	}
-	//ºóĞò±éÀú
+	//ååºéå†
 	void printPost(Node *_node, std::ostream &os){
 		if (_node){
 			printPost(_node->left, os);
@@ -101,8 +101,8 @@ private:
 			os << _node->data << " ";
 		}
 	}
-	//ÖĞĞò±éÀú
-	void printIn(Node *_node, std::ostream &os){//ÖĞĞò±éÀú//Ò»°ãÓÃµ½µİ¹éÊ±±ØĞëÔËÓÃNode*
+	//ä¸­åºéå†
+	void printIn(Node *_node, std::ostream &os){//ä¸­åºéå†//ä¸€èˆ¬ç”¨åˆ°é€’å½’æ—¶å¿…é¡»è¿ç”¨Node*
 		if (_node){
 			printIn(_node->left,os);
 			os << _node->data << " ";
@@ -110,9 +110,9 @@ private:
 		}
 	}
 
-	//²ã´Î±éÀú
+	//å±‚æ¬¡éå†
 	void printLevel(Node *_node, ostream &_os){
-		if (_node){//ÏÈ¼ì²âÒ»ÏÂµ±Ç°½ÚµãÊÇ·ñÎª¿Õ
+		if (_node){//å…ˆæ£€æµ‹ä¸€ä¸‹å½“å‰èŠ‚ç‚¹æ˜¯å¦ä¸ºç©º
 			queue<Node*> Q;
 			Q.push(_node);
 			while (!Q.empty())
@@ -137,14 +137,14 @@ private:
 		_node = nullptr;
 	}
 
-	Node *getMax(Node *_node){//·Çµİ¹é
+	Node *getMax(Node *_node){//éé€’å½’//å»ºè®®ä½¿ç”¨éé€’å½’ï¼Œå› ä¸ºå°¾é€’å½’ä¸€èˆ¬è½»æ˜“å¯ä»¥æ¶ˆé™¤
 		if (_node){
 			while (_node->right)
 				_node = _node->right;
 		}
 		return _node;
 	}
-	Node *getMax1(Node *_node){//µİ¹é
+	Node *getMax1(Node *_node){//é€’å½’
 		if (_node){
 			if (_node->right == nullptr)
 				return _node;
@@ -153,22 +153,33 @@ private:
 		}
 		return _node;
 	}
-	Node *getMin(Node *_node){
+	Node *getMin(Node *_node){//éé€’å½’
 		if (_node){
 			while (_node->left)
 				_node = _node->left;
 		}
 		return _node;
 	}
+	
+	Node *getMin1(Node *_node){//é€’å½’
+		if(_node){
+			if(_node->left == nullptr)
+				return _node;
+			else
+				_node = _node->left;
+		}
+		return _node;
+		
+	}
 
 	void remove(Node *&_node,const T &_data){
-		if (_node == nullptr)//µİ¹é»ù
+		if (_node == nullptr)//é€’å½’åŸº
 			return;
 		else if (_data < _node->data)
 			remove(_node->left, _data);
 		else if (_data > _node->data)
 			remove(_node->right, _data);
-		else{//ÕÒµ½¸Ã½Úµã
+		else{//æ‰¾åˆ°è¯¥èŠ‚ç‚¹
 			if (_node->left && _node->right){
 				_node->data = getMin(_node->right)->data;
 				remove(_node->right,_node->data);
